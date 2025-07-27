@@ -3,31 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel App</title>
+    <title>Plan-derlust | Travel Planner</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
-        <h1>Travel App</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="activities.html">Country Info</a>
-            <a href="plan.html">Weather Info</a>
-        </nav>
+        <div class="header-container">
+            <h1>Plan-derlust</h1>
+            <button class="hamburger" aria-label="Menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            <nav>
+                <a href="index.html" class="nav-btn">Where To?</a>
+                <a href="activities.html" class="nav-btn">Experiences</a>
+                <a href="plan.html" class="nav-btn">Game Plan</a>
+            </nav>
+        </div>
     </header>
 
-    <div class="container">
-        <h2>Welcome to the Travel App!</h2>
-        <p>Explore country data, activities, and weather information to help plan your amazing trip.</p>
-    </div>
+    <main>
+        <div class="container">
+            <div class="card">
+                <h2>Discover Your Next Adventure</h2>
+                <p>Explore country data, activities, and weather information to plan your perfect trip.</p>
+                <div class="search-container">
+                    <input type="text" id="countryInput" placeholder="Enter a country name...">
+                    <button id="searchBtn" type="button">Search</button>
+                </div>
+            </div>
+            
+            <div id="countryResult" class="card hidden">
+                <div id="countryDetails"></div>
+            </div>
+        </div>
+    </main>
 
-    <div class="container">
-        <input type="text" id="countryInput" placeholder="Enter Country Name">
-        <button onclick="getCountryInfo()">Get Info</button>
-        <div id="countryResult">
-    </div>
+    <footer>
+        <div class="container">
+            <p>© <span id="currentYear"></span> Plan-derlust | Travel Planner</p>
+        </div>
+    </footer>
 
     <script src="index.js"></script>
-    
 </body>
 </html>
