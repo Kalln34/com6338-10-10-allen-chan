@@ -1,49 +1,206 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: #f4f4f4;
+    margin: 0;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
 }
 
 header {
     background: #0077b6;
     color: white;
     padding: 1em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 1rem 0;
+}
+
+h1 {
+margin: 0 0 1rem 0;
+    font-size: 1.5rem;
     text-align: center;
 }
 
-nav a {
-    margin: 0 1em;
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.hamburger-inner {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    position: relative;
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: "";
+    width: 30px;
+    height: 3px;
+    background: white;
+    position: absolute;
+    left: 0;
+}
+
+.hamburger-inner::before {
+    top: -8px;
+}
+
+.hamburger-inner::after {
+    bottom: -8px;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    background: transparent;
     color: white;
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-.container {
-    padding: 2em;
+.nav-btn:hover {
+    background: rgba(255,255,255,0.1);
 }
 
-input, button {
-    padding: 0.5em;
-    margin-top: 1em;
-    display: block;
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-select, label {
-    margin-top: 1em;
-    display: block;
+.search-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.search-container button {
+    min-width: fit-content;
+}
+
+input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    flex: 1;
+}
+
+button {
+    background: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #005f92;
+}
+
+footer {
+    background: #0077b6;
+    margin-top: auto;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.hidden {
+    display: none;
 }
 
 @media (max-width:768px) {
-    header h1 {
-        font-size: 1.8rem;
+    .header-container {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 0.5rem 1rem;
     }
 
-    nav a {
-        padding: 0.5em;
-        font-size: 0.9em;
+    h1 {
+        margin: 0.5rem 0;
+        width: 100%;
+        text-align: center;
     }
 
-    .container {
-        padding: 1.5em 1em;
+        .hamburger {
+        display: block;
+    }
+    
+    nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #0077b6;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        gap: 0;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    
+    nav.active {
+        transform: scaleY(1);
+    }
+    
+    .nav-btn {
+        width: 90%;
+        text-align: center;
+        margin: 0.5rem 0;
+        padding: 1rem;
+    }
+
+     .search-container {
+        flex-direction: column;
+    }
+
+    .search-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .search-container button {
+        width: auto;
+        padding: 0.75rem 1.5rem;
     }
 }
