@@ -7,11 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     boredBtn.addEventListener("click", async () => {
         activityResult.textContent = "Finding something fun...";
+
         try {
             const response = await fetch("https://www.boredapi.com/api/activity/");
             if (!response.ok) {
                 throw new Error("Network response not ok");
             }
+            
             const data = await response.json();
             activityResult.textContent = `How about: ${data.activity}`;
             } catch (error) {
@@ -19,4 +21,4 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error finding activity:", error);
             }
       });
-})
+});
