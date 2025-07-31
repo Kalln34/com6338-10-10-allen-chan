@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     boredBtn.addEventListener("click", async () => {
         activityResult.textContent = "Finding something fun...";
 
+
         const type =activityType.value;
         let apiUrl = "https://www.boredapi.com/api/activity/";
 
@@ -19,6 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error("Could not fetch activity");
         
+
+        try {
+            const response = await fetch("https://www.boredapi.com/api/activity/");
+            if (!response.ok) {
+                throw new Error("Network response not ok");
+            }
+            
+
             const data = await response.json();
             
             if (data && data.activity) {
