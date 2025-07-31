@@ -19,14 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error("Could not fetch activity");
-        
-
-        try {
-            const response = await fetch("https://www.boredapi.com/api/activity/");
-            if (!response.ok) {
-                throw new Error("Network response not ok");
-            }
-            
 
             const data = await response.json();
             
