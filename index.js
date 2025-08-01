@@ -57,15 +57,15 @@ async function getCapitalWeather(capital, countryName) {
             throw new Error('Weather data not available');
         }
         const weatherData = await weatherResponse.json();
-        displayWeatherInfo(weatherData);
+        displayWeatherInfo(weatherData, countryName, capital);
         weatherInfo.classList.remove('hidden');
     } catch (error) {
         console.error('Weather fetch error:', error);
         weatherDetails.innerHTML = `
             <div class="weather-card">
-                <h4>Weather in ${countryInput.value.trim()}'s Capital</h4>
+                <h4>Weather in ${capital} (Capital of ${countryName})</h4>
                 <p>Weather information not available</p>
-                <a href="activities.html?country=${encodeURIComponent(countryInput.value.trim())}" class="btn explore-btn">
+                <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn explore-btn">
                     Explore Activities
                 </a>
             </div>
@@ -125,7 +125,7 @@ function displayWeatherInfo(weatherData, countryName, capital) {
                 <p><strong>Humidity:</strong> ${humidity}%</p>
                 <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
             </div>
-             <a href="activities.html?country=${encodeURIComponent(country.name.common)}" class="btn">
+             <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn">
                 Explore Activities
             </a>
         </div>
