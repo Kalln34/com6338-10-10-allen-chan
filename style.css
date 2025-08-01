@@ -240,6 +240,13 @@ footer {
     border-color: #c03939;
 }
 
+.day-header input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 1rem;
+}
+
 @media (max-width:768px) {
     .header-container {
         flex-direction: row;
@@ -310,5 +317,9 @@ footer {
     
     .planner button {
         width: 100%;
+    }
+
+    select, input[type="number"], button {
+        font-size: 1rem;
     }
 }
