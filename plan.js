@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
     const addDayBtn = document.getElementById('addDayBtn');
     const clearAllBtn = document.getElementById('clearAllBtn');
     const itineraryContainer = document.getElementById('itineraryContainer');
