@@ -27,22 +27,21 @@
     <main>
         <div class="container">
             <div class="card">
-                <h2>Discover New Things to Do!</h2>
+                <h2>Discover the Best Times to Visit!</h2>
 
-                <label for="locationInput">Enter a location:</label>
-                <input type="text" id="locationInput" placeholder="e.g., Rome or 10036" />
+                <label for="venueName">Venue Name:</label>
+                <input type="text" id="venueName" placeholder="e.g., The Met" />
 
-                <label for="activityType">Choose an destination!</label>
-                <select id="activityType">
-                    <option value="">Any</option>
-                    <option value="tourism.sights">Tourist Sites</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="leisure.sports_center">Sports</option>
-                    <option value="Restaurants">Restaurants</option>
-                </select>
+                <label for="venueCity">Venue Name:</label>
+                <input type="text" id="venueCity" placeholder="e.g., New York" />
+
+                <label for="venueCountry">Venue Name:</label>
+                <input type="text" id="venueCountry" placeholder="e.g., United States" />
+
                 
-                <button id="boredBtn">Suggest Something Fun!</button>
-                <p id="activityResult"></p>
+                <button id="getTimesBtn">Check Busy Times</button>
+                <div id="result"></div>
+                
             </div>
         </div>
     </main>
