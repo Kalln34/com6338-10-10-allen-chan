@@ -4,8 +4,12 @@ async function convertCurrency() {
   const from = document.getElementById('fromCurrency').value;
   const to = document.getElementById('toCurrency').value;
   const amount = parseFloat(document.getElementById('amount').value.trim());
-
   const output = document.getElementById('output');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    nav.classList.toggle('active');
+});
 
   if (!from || !to || isNaN(amount)) {
     output.textContent = 'Please select your currencies and enter a valid amount.';
@@ -39,4 +43,7 @@ async function convertCurrency() {
     output.textContent = 'Failed to retrieve data. Please try again.';
   }
 }
+
+
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 
