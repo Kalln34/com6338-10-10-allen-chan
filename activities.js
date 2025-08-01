@@ -1,10 +1,13 @@
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
 const hamburger = document.querySelector('.hamburger');
 const nav = document.querySelector('nav');
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    nav.classList.toggle('active');
-});
+if (hamburger && nav) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        nav.classList.toggle('active');
+    });
 
 document.querySelectorAll('.nav-btn').forEach(link => {
     link.addEventListener('click',() => {
@@ -12,6 +15,8 @@ document.querySelectorAll('.nav-btn').forEach(link => {
         nav.classList.remove('active');
     });
 });
+}
+
 
 async function convertCurrency() {
   const apiKey = '8dd515216a9ba455ab55a7ec';
@@ -53,4 +58,3 @@ async function convertCurrency() {
   }
 }
 
-document.getElementById('currentYear').textContent = new Date().getFullYear();
