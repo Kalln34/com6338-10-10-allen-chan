@@ -1,57 +1,40 @@
-document.getElementById("getTimesBtn").addEventListener("click", async () => {
-      const venueName = document.getElementById("venueName").value.trim();
-      const venueCity = document.getElementById("venueCity").value.trim();
-      const venueCountry = document.getElementById("venueCountry").value.trim();
-      const resultBox = document.getElementById("result");
+async function convertCurrency() {
+  const apiKey = '8dd515216a9ba455ab55a7ec';
+  const from = document.getElementById('fromCurrency').value;
+  const to = document.getElementById('toCurrency').value;
+  const amount = parseFloat(document.getElementById('amount').value.trim());
 
-      const API_KEY = 'pub_3b7edace4dc54d1bbf238c03ae8549fb'
+  const output = document.getElementById('output');
 
-       if (!venueName || !venueCity) {
-        resultBox.innerHTML = "Please enter venue name and city.";
-        return;
-      }
+  if (!from || !to || isNaN(amount)) {
+    output.textContent = 'Please select your currencies and enter a valid amount.';
+    return;
+  }
 
-      resultBox.innerHTML = "searching now...";
+  if (from === to) {
+    output.textContent = 'Please choose two different currencies.';
+    return;
+  }
 
-         try {
-    
-        const venueData = {
-          api_key_public: API_KEY,
-          venue_name: venueName,
-          venue_address: venueCity + (venueCountry ? ", " + venueCountry : "")
-        };
+  const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}/${amount}`;
 
-        const regRes = await fetch("https://besttime.app/api/v1/venues/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(venueData)
-        });
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-        const regJson = await regRes.json();
+    if (data.result !== "success") {
+      output.textContent = `API Error: ${data['error-type'] || 'Unknown error'}`;
+      return;
+    }
 
-        if (!regJson || !regJson.success || !regJson.venue_id) {
-          resultBox.innerHTML = "❌ Could not register venue. " + (regJson.message || "");
-          return;
-        }
-
-        const venueId = regJson.venue_id;
-
-        const forecastRes = await fetch(`https://besttime.app/api/v1/forecasts/populartimes?venue_id=${venueId}&api_key_public=${API_KEY}`);
-        const forecastJson = await forecastRes.json();
-
-        if (!forecastJson || !forecastJson.analysis || !forecastJson.analysis.length) {
-          resultBox.innerHTML = "No popular time data available.";
-          return;
-        }
-
-        const today = new Date().getDay() - 1; 
-        const todayData = forecastJson.analysis[today] || forecastJson.analysis[0];
-
-        resultBox.innerHTML = `<h3>${venueName}</h3>
-          <strong>${todayData.day_info.day_text}</strong><br>
-          Busy Hours: ${todayData.busy_hours.join(", ")}`;
-      } catch (err) {
-        console.error(err);
-        resultBox.innerHTML = "An error occurred while fetching data.";
-      }
-    });
+    output.innerHTML = `
+      <strong>Exchange Rate:</strong><br>
+      1 ${from} = ${data.conversion_rate} ${to}<br><br>
+      <strong>Converted Amount:</strong><br>
+      ${amount} ${from} = ${data.conversion_result.toFixed(2)} ${to}
+    `;
+  } catch (err) {
+    console.error(err);
+    output.textContent = 'Failed to retrieve data. Please try again.';
+  }
+}
