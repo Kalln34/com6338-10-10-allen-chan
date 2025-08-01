@@ -30,18 +30,16 @@ async function getCountryInfo() {
         if (!countryResponse.ok) {
             throw new Error('Country not found');
         }
-        
         const countryData = await countryResponse.json();
         const country = countryData[0];
         displayCountryInfo(country);
-
         if (country.capital && country.capital[0]) {
-            await getCapitalWeather(country.capital[0], country.name.common);
+          await getCapitalWeather(country.capital[0], country.name.common);
         } else {
             weatherInfo.classList.add('hidden');
         }
-        countryResult.classList.remove('hidden');
 
+        countryResult.classList.remove('hidden');
     } catch (error) {
         alert(`Error: ${error.message}`);
         countryResult.classList.add('hidden');
@@ -53,21 +51,23 @@ async function getCapitalWeather(capital, countryName) {
     try {
         const apiKey = '346eae349864fcea3c5ac35c5d05c789';
         const weatherResponse = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${capital},${countryName}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${capital},${countryName}&units=imperial&appid=${apiKey}`
         );
         if (!weatherResponse.ok) {
             throw new Error('Weather data not available');
         }
+
         const weatherData = await weatherResponse.json();
-        displayWeatherInfo(weatherData);
+
+        displayWeatherInfo(weatherData, countryName, capital);
         weatherInfo.classList.remove('hidden');
     } catch (error) {
         console.error('Weather fetch error:', error);
         weatherDetails.innerHTML = `
             <div class="weather-card">
-                <h4>Weather in ${countryInput.value.trim()}'s Capital</h4>
+                <h4>Weather in ${capital} (Capital of ${countryName})</h4>
                 <p>Weather information not available</p>
-                <a href="activities.html?country=${encodeURIComponent(countryInput.value.trim())}" class="btn explore-btn">
+                <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn explore-btn">
                     Explore Activities
                 </a>
             </div>
@@ -104,7 +104,7 @@ function displayCountryInfo(country) {
     countryResult.scrollIntoView({ behavior: 'smooth' });
 }
 
-function displayWeatherInfo(weatherData) {
+function displayWeatherInfo(weatherData, countryName, capital) {
     const temp = Math.round(weatherData.main.temp);
     const feelsLike = Math.round(weatherData.main.feels_like);
     const description = weatherData.weather[0].description;
@@ -114,20 +114,20 @@ function displayWeatherInfo(weatherData) {
 
     weatherDetails.innerHTML = `
         <div class="weather-card">
-            <h4>Weather in ${countryInput.value.trim()}'s Capital</h4>
+            <h4>Weather in ${capital} (Capital of ${countryName})</h4>
             <div class="weather-main">
                 <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
                 <div>
-                    <p class="weather-temp">${temp}°C</p>
+                    <p class="weather-temp">${temp}°F</p>
                     <p class="weather-desc">${description}</p>
-                    <p>Feels like: ${feelsLike}°C</p>
+                    <p>Feels like: ${feelsLike}°F</p>
                 </div>
             </div>
             <div class="weather-details">
                 <p><strong>Humidity:</strong> ${humidity}%</p>
                 <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
             </div>
-             <a href="activities.html?country=${encodeURIComponent(country.name.common)}" class="btn">
+             <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn">
                 Explore Activities
             </a>
         </div>
