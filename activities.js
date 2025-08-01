@@ -11,6 +11,13 @@ async function convertCurrency() {
     nav.classList.toggle('active');
 });
 
+document.querySelectorAll('.nav-btn').forEach(link => {
+    link.addEventListener('click',() => {
+        hamburger.classList.remove('active');
+        nav.classList.remove('active');
+    });
+});
+
   if (!from || !to || isNaN(amount)) {
     output.textContent = 'Please select your currencies and enter a valid amount.';
     return;
