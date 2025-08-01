@@ -4,7 +4,6 @@ async function convertCurrency() {
   const from = document.getElementById('fromCurrency').value;
   const to = document.getElementById('toCurrency').value;
   const amount = parseFloat(document.getElementById('amount').value.trim());
-
   const output = document.getElementById('output');
 
   if (!from || !to || isNaN(amount)) {
@@ -39,4 +38,7 @@ async function convertCurrency() {
     output.textContent = 'Failed to retrieve data. Please try again.';
   }
 }
+
+
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 
