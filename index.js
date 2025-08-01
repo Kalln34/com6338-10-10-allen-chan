@@ -67,9 +67,6 @@ async function getCapitalWeather(capital, countryName) {
             <div class="weather-card">
                 <h4>Weather in ${capital} (Capital of ${countryName})</h4>
                 <p>Weather information not available</p>
-                <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn explore-btn">
-                    Explore Activities
-                </a>
             </div>
         `;
         weatherInfo.classList.remove('hidden');
@@ -99,6 +96,9 @@ function displayCountryInfo(country) {
                 <p><strong>Languages:</strong> ${languages}</p>
                 <p><strong>Currencies:</strong> ${currencies}</p>
             </div>
+            <a href="activities.html?country=${encodeURIComponent(country.name.common)}" class="btn">
+                Convert Currency
+            </a>
         </div>
     `;
     countryResult.scrollIntoView({ behavior: 'smooth' });
@@ -127,9 +127,6 @@ function displayWeatherInfo(weatherData, countryName, capital) {
                 <p><strong>Humidity:</strong> ${humidity}%</p>
                 <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
             </div>
-             <a href="activities.html?country=${encodeURIComponent(countryName)}" class="btn">
-                Explore Activities
-            </a>
         </div>
     `;
 }
