@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
+
     const addDayBtn = document.getElementById('addDayBtn');
     const clearAllBtn = document.getElementById('clearAllBtn');
     const itineraryContainer = document.getElementById('itineraryContainer');
@@ -7,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItinerary();
     addDayBtn.addEventListener('click', addNewDay);
     clearAllBtn.addEventListener('click', clearAllDays);
+
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    nav.classList.toggle('active');
+});
 
     function addNewDay() {
         const newDay = {
@@ -137,7 +145,4 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('travelItinerary', JSON.stringify(itinerary));
     }
 });
-
-
-
 
