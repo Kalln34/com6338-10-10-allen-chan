@@ -30,18 +30,16 @@ async function getCountryInfo() {
         if (!countryResponse.ok) {
             throw new Error('Country not found');
         }
-        
         const countryData = await countryResponse.json();
         const country = countryData[0];
         displayCountryInfo(country);
-
         if (country.capital && country.capital[0]) {
-            await getCapitalWeather(country.capital[0], country.name.common);
+          await getCapitalWeather(country.capital[0], country.name.common);
         } else {
             weatherInfo.classList.add('hidden');
         }
-        countryResult.classList.remove('hidden');
 
+        countryResult.classList.remove('hidden');
     } catch (error) {
         alert(`Error: ${error.message}`);
         countryResult.classList.add('hidden');
@@ -104,7 +102,7 @@ function displayCountryInfo(country) {
     countryResult.scrollIntoView({ behavior: 'smooth' });
 }
 
-function displayWeatherInfo(weatherData) {
+function displayWeatherInfo(weatherData, countryName, capital) {
     const temp = Math.round(weatherData.main.temp);
     const feelsLike = Math.round(weatherData.main.feels_like);
     const description = weatherData.weather[0].description;
@@ -114,7 +112,7 @@ function displayWeatherInfo(weatherData) {
 
     weatherDetails.innerHTML = `
         <div class="weather-card">
-            <h4>Weather in ${countryInput.value.trim()}'s Capital</h4>
+            <h4>Weather in ${capital} (Capital of ${countryName})</h4>
             <div class="weather-main">
                 <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
                 <div>
