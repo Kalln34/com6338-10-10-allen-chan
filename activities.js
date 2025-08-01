@@ -1,6 +1,3 @@
-
-document.getElementById('currentYear').textContent = new Date().getFullYear();
-
 const hamburger = document.querySelector('.hamburger');
 const nav = document.querySelector('nav');
 
@@ -55,3 +52,5 @@ async function convertCurrency() {
     output.textContent = 'Failed to retrieve data. Please try again.';
   }
 }
+
+document.getElementById('currentYear').textContent = new Date().getFullYear();
