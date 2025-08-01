@@ -1,3 +1,4 @@
+
 async function convertCurrency() {
   const apiKey = '8dd515216a9ba455ab55a7ec';
   const from = document.getElementById('fromCurrency').value;
@@ -38,3 +39,4 @@ async function convertCurrency() {
     output.textContent = 'Failed to retrieve data. Please try again.';
   }
 }
+
