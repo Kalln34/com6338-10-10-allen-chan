@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         id: Date.now(),
         date: '', 
         location: '',
-        weather: null,
         activities: []
     };
     itinerary.push(newDay);
@@ -54,14 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label>Location:</label>
                     <input type="text" class="location-input" value="${day.location}" 
                         placeholder="Enter location" data-day="${dayIndex}">
-                    <button class="get-weather-btn" data-day="${dayIndex}">Get Weather</button>
-                        ${day.weather ? `
-                        <div class="weather-info">
-                            <img src="https://openweathermap.org/img/wn/${day.weather.icon}@2x.png">
-                            <span>${day.weather.temp}°C, ${day.weather.description}</span>
-                        </div>
-                    ` : ''}
-                </div>
+                    </div>
                 <div class="activities-section">
                     <div class="add-activity">
                         <input type="time" class="activity-time" data-day="${dayIndex}">
@@ -87,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dayElement.querySelector('.day-date').addEventListener('change', updateDate);
             dayElement.querySelector('.delete-day').addEventListener('click', deleteDay);
             dayElement.querySelector('.location-input').addEventListener('change', updateLocation);
-            dayElement.querySelector('.get-weather-btn').addEventListener('click', getWeather);
             dayElement.querySelector('.add-activity-btn').addEventListener('click', addActivity);
             return dayElement; 
     }
@@ -96,8 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dayIndex = parseInt(e.target.dataset.day);
     itinerary[dayIndex].date = e.target.value;
     saveItinerary();
-    renderItinerary(); 
-}
+    renderItinerary();    
+    }
+     
     function deleteDay(e) {
         const id = parseInt(e.target.dataset.id);
         itinerary = itinerary.filter(day => day.id !== id);
@@ -111,43 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         saveItinerary();
     }
 
-    async function getWeather(e) {
-        const dayIndex = parseInt(e.target.dataset.day);
-        const location = itinerary[dayIndex].location;
-        
-        if (!location) {
-            alert('Please enter a location first');
-            return;
-        }
-        
-        try {
-            const apiKey = '346eae349864fcea3c5ac35c5d05c789';
-            const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`
-            );
-            
-            if (!response.ok) throw new Error('Location not found');
-            
-            const data = await response.json();
-            itinerary[dayIndex].weather = {
-                temp: Math.round(data.main.temp),
-                description: data.weather[0].description,
-                icon: data.weather[0].icon
-            };
-            
-            saveItinerary();
-            renderItinerary();
-        } catch (error) {
-            alert(`Error: ${error.message}`);
-        }
-    }
-
     function addActivity(e) {
         const dayIndex = parseInt(e.target.dataset.day);
         const activitySection = e.target.closest('.add-activity');
         const timeInput = activitySection.querySelector('.activity-time');
         const activityInput = activitySection.querySelector('.activity-input');
-        
         const time = timeInput.value;
         const name = activityInput.value.trim();
         
