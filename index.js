@@ -51,12 +51,14 @@ async function getCapitalWeather(capital, countryName) {
     try {
         const apiKey = '346eae349864fcea3c5ac35c5d05c789';
         const weatherResponse = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${capital},${countryName}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${capital},${countryName}&units=imperial&appid=${apiKey}`
         );
         if (!weatherResponse.ok) {
             throw new Error('Weather data not available');
         }
+
         const weatherData = await weatherResponse.json();
+
         displayWeatherInfo(weatherData, countryName, capital);
         weatherInfo.classList.remove('hidden');
     } catch (error) {
@@ -116,9 +118,9 @@ function displayWeatherInfo(weatherData, countryName, capital) {
             <div class="weather-main">
                 <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
                 <div>
-                    <p class="weather-temp">${temp}°C</p>
+                    <p class="weather-temp">${temp}°F</p>
                     <p class="weather-desc">${description}</p>
-                    <p>Feels like: ${feelsLike}°C</p>
+                    <p>Feels like: ${feelsLike}°F</p>
                 </div>
             </div>
             <div class="weather-details">
