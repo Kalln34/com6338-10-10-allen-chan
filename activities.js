@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     currentYear.textContent = new Date().getFullYear();
 
-    findBtn.addEventListener("click", () => {
-        activityResult.textContent = "Finding you...";
+    boredBtn.addEventListener("click", () => {
+        activityResult.textContent = "Finding you something to do...";
 
         if (!navigator.geolocation) {
             activityResult.textContent = "Geolocation not supported by browser";
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const selectedType = activityType.value;
             const categoryFilter = selectedType ? `&categories=${selectedType}` : "";
 
-            const apiUrl = 'https://api.geoapify.com/v2/places?filter=circle:${lon},${lat},5000${categoryFilter}&limit=10&apiKey=${API_KEY}';
+            const apiUrl = `https://api.geoapify.com/v2/places?filter=circle:${lon},${lat},5000${categoryFilter}&limit=10&apiKey=${API_KEY}`;
 
             try {
                 const response = await fetch(apiUrl);
