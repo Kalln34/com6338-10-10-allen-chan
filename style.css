@@ -318,4 +318,8 @@ footer {
     .planner button {
         width: 100%;
     }
+
+    select, input[type="number"], button {
+        font-size: 1rem;
+    }
 }
