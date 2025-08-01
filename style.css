@@ -133,6 +133,63 @@ button:hover {
     background: #005f92;
 }
 
+.weather-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.weather-card h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #0077b6;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.weather-desc {
+    text-transform: capitalize;
+    margin: 0.5rem 0;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    background: #0077b6;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background: #005f92;
+}
+
 footer {
     background: #0077b6;
     margin-top: auto;
@@ -228,7 +285,7 @@ footer {
         padding: 1rem;
     }
 
-     .search-container {
+    .search-container {
         flex-direction: column;
     }
 
@@ -240,6 +297,10 @@ footer {
     .search-container button {
         width: auto;
         padding: 0.75rem 1.5rem;
+    }
+
+     .weather-details {
+        grid-template-columns: 1fr;
     }
 
     .planner {
