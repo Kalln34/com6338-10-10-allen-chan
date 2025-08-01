@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     currentYear.textContent = new Date().getFullYear();
 
+
     findBtn.addEventListener("click", async () => {
         activityResult.textContent = "Finding something to do...";
 
@@ -27,8 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         activityResult.textContent = "Could not find that location.";
         return;
       }
-
-      const { lat, lon } = geocodeData.features[0].properties;
 
     
       const selectedType = activityType.value;
