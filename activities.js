@@ -1,68 +1,57 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const boredBtn = document.getElementById("boredBtn");
-    const activityResult = document.getElementById("activityResult");
-    const currentYear = document.getElementById("currentYear");
-    const activityType = document.getElementById("activityType");
-    const locationInput = document.getElementById("locationInput");
+document.getElementById("getTimesBtn").addEventListener("click", async () => {
+      const venueName = document.getElementById("venueName").value.trim();
+      const venueCity = document.getElementById("venueCity").value.trim();
+      const venueCountry = document.getElementById("venueCountry").value.trim();
+      const resultBox = document.getElementById("result");
 
-    currentYear.textContent = new Date().getFullYear();
+      const API_KEY = 'pub_3b7edace4dc54d1bbf238c03ae8549fb'
 
-
-    findBtn.addEventListener("click", async () => {
-        activityResult.textContent = "Finding something to do...";
-
-        const location = locationInput.value.trim();
-    if (!location) {
-      activityResult.textContent = "Please enter a location.";
-      return;
-    }
-
-    const GEOAPIFY_API_KEY = "935a4f1e531431889e2ce2c02564d7b"; 
-
-    const geocodeUrl = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(location)}&limit=1&apiKey=${GEOAPIFY_API_KEY}`;
-    try {
-      const geocodeResponse = await fetch(geocodeUrl);
-      const geocodeData = await geocodeResponse.json();
-
-      if (!geocodeData.features || geocodeData.features.length === 0) {
-        activityResult.textContent = "Could not find that location.";
+       if (!venueName || !venueCity) {
+        resultBox.innerHTML = "Please enter venue name and city.";
         return;
       }
 
+      resultBox.innerHTML = "searching now...";
+
+         try {
     
-      const selectedType = activityType.value;
-      const categoryFilter = selectedType ? `&categories=${selectedType}` : "";
-      const radius = 5000; 
+        const venueData = {
+          api_key_public: API_KEY,
+          venue_name: venueName,
+          venue_address: venueCity + (venueCountry ? ", " + venueCountry : "")
+        };
 
-      const placesUrl = `https://api.geoapify.com/v2/places?filter=circle:${lon},${lat},${radius}${categoryFilter}&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
-      const placesResponse = await fetch(placesUrl);
-      const placesData = await placesResponse.json();
+        const regRes = await fetch("https://besttime.app/api/v1/venues/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(venueData)
+        });
 
-      const places = placesData.features;
-      if (!places || places.length === 0) {
-        activityResult.textContent = "No attractions found nearby.";
-        return;
+        const regJson = await regRes.json();
+
+        if (!regJson || !regJson.success || !regJson.venue_id) {
+          resultBox.innerHTML = "❌ Could not register venue. " + (regJson.message || "");
+          return;
+        }
+
+        const venueId = regJson.venue_id;
+
+        const forecastRes = await fetch(`https://besttime.app/api/v1/forecasts/populartimes?venue_id=${venueId}&api_key_public=${API_KEY}`);
+        const forecastJson = await forecastRes.json();
+
+        if (!forecastJson || !forecastJson.analysis || !forecastJson.analysis.length) {
+          resultBox.innerHTML = "No popular time data available.";
+          return;
+        }
+
+        const today = new Date().getDay() - 1; 
+        const todayData = forecastJson.analysis[today] || forecastJson.analysis[0];
+
+        resultBox.innerHTML = `<h3>${venueName}</h3>
+          <strong>${todayData.day_info.day_text}</strong><br>
+          Busy Hours: ${todayData.busy_hours.join(", ")}`;
+      } catch (err) {
+        console.error(err);
+        resultBox.innerHTML = "An error occurred while fetching data.";
       }
-
-      const randomPlace = places[Math.floor(Math.random() * places.length)];
-      const name = randomPlace.properties.name || "Unnamed Place";
-      const address = randomPlace.properties.formatted || "Address Unavailable";
-
-      activityResult.innerHTML = `<strong>${name}</strong><br>${address}`;
-    } catch (error) {
-      console.error("Error:", error);
-      activityResult.textContent = "An error occurred while finding attractions.";
-    }
-  });
-});
-
-
-
-
-
-       
-        
-        
-    
-
-    
+    });
