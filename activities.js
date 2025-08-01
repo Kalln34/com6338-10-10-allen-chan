@@ -3,55 +3,64 @@ document.addEventListener("DOMContentLoaded", () => {
     const activityResult = document.getElementById("activityResult");
     const currentYear = document.getElementById("currentYear");
     const activityType = document.getElementById("activityType");
+    const locationInput = document.getElementById("locationInput");
 
     currentYear.textContent = new Date().getFullYear();
 
-    boredBtn.addEventListener("click", () => {
-        activityResult.textContent = "Finding you something to do...";
 
-        if (!navigator.geolocation) {
-            activityResult.textContent = "Geolocation not supported by browser";
-            return;
-        }
+    findBtn.addEventListener("click", async () => {
+        activityResult.textContent = "Finding something to do...";
 
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+        const location = locationInput.value.trim();
+    if (!location) {
+      activityResult.textContent = "Please enter a location.";
+      return;
+    }
 
-            activityResult.textContent = "Finding nearby attractions...";
+    const GEOAPIFY_API_KEY = "935a4f1e531431889e2ce2c02564d7b"; 
 
-            const API_KEY = "3935a4f1e531431889e2ce2c02564d7b";
-            const selectedType = activityType.value;
-            const categoryFilter = selectedType ? `&categories=${selectedType}` : "";
+    const geocodeUrl = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(location)}&limit=1&apiKey=${GEOAPIFY_API_KEY}`;
+    try {
+      const geocodeResponse = await fetch(geocodeUrl);
+      const geocodeData = await geocodeResponse.json();
 
-            const apiUrl = `https://api.geoapify.com/v2/places?filter=circle:${lon},${lat},5000${categoryFilter}&limit=10&apiKey=${API_KEY}`;
+      if (!geocodeData.features || geocodeData.features.length === 0) {
+        activityResult.textContent = "Could not find that location.";
+        return;
+      }
 
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error ("Failed to retrieve places");
+    
+      const selectedType = activityType.value;
+      const categoryFilter = selectedType ? `&categories=${selectedType}` : "";
+      const radius = 5000; 
 
-                const data = await response.json();
-                const places = data.features;
+      const placesUrl = `https://api.geoapify.com/v2/places?filter=circle:${lon},${lat},${radius}${categoryFilter}&limit=10&apiKey=${GEOAPIFY_API_KEY}`;
+      const placesResponse = await fetch(placesUrl);
+      const placesData = await placesResponse.json();
 
-                if (places.length > 0) {
-                    const randomPlace = places[Math.floor(Math.random() * places.length)];
-                    const name = randomPlace.properties.name || "Unamed Place";
-                    const address = randomPlace.properties.formatted || "Address Unavailable";
+      const places = placesData.features;
+      if (!places || places.length === 0) {
+        activityResult.textContent = "No attractions found nearby.";
+        return;
+      }
 
-                    activityResult.textContent = `Visit: ${name} – ${address}`;
-                  } else {
-                    activityResult.textContent = "No mathcing locations found. Please try something different!";
-                  }
-                } catch (error) {
-                    console.error("Error retrieving places:", error);
-                    activityResult.textContent = "Sorry, something went wrong!";
-                }
-            }, () => {
-                activityResult.textContent = "Unable to get location";
-            });
+      const randomPlace = places[Math.floor(Math.random() * places.length)];
+      const name = randomPlace.properties.name || "Unnamed Place";
+      const address = randomPlace.properties.formatted || "Address Unavailable";
 
-        });
+      activityResult.innerHTML = `<strong>${name}</strong><br>${address}`;
+    } catch (error) {
+      console.error("Error:", error);
+      activityResult.textContent = "An error occurred while finding attractions.";
+    }
+  });
 });
+
+
+
+
+
+       
         
         
     
