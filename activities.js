@@ -1,10 +1,8 @@
 
-async function convertCurrency() {
-  const apiKey = '8dd515216a9ba455ab55a7ec';
-  const from = document.getElementById('fromCurrency').value;
-  const to = document.getElementById('toCurrency').value;
-  const amount = parseFloat(document.getElementById('amount').value.trim());
-  const output = document.getElementById('output');
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+const hamburger = document.querySelector('.hamburger');
+const nav = document.querySelector('nav');
 
   hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
@@ -17,6 +15,13 @@ document.querySelectorAll('.nav-btn').forEach(link => {
         nav.classList.remove('active');
     });
 });
+
+async function convertCurrency() {
+  const apiKey = '8dd515216a9ba455ab55a7ec';
+  const from = document.getElementById('fromCurrency').value;
+  const to = document.getElementById('toCurrency').value;
+  const amount = parseFloat(document.getElementById('amount').value.trim());
+  const output = document.getElementById('output');
 
   if (!from || !to || isNaN(amount)) {
     output.textContent = 'Please select your currencies and enter a valid amount.';
@@ -50,7 +55,3 @@ document.querySelectorAll('.nav-btn').forEach(link => {
     output.textContent = 'Failed to retrieve data. Please try again.';
   }
 }
-
-
-  document.getElementById('currentYear').textContent = new Date().getFullYear();
-
