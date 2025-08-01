@@ -1,6 +1,8 @@
 const countryInput = document.getElementById('countryInput');
 const countryResult = document.getElementById('countryResult');
 const countryDetails = document.getElementById('countryDetails');
+const weatherInfo = document.getElementById('weatherInfo');
+const weatherDetails = document.getElementById('weatherDetails');
 const hamburger = document.querySelector('.hamburger');
 const nav = document.querySelector('nav');
 
@@ -24,19 +26,47 @@ async function getCountryInfo() {
     }
 
     try {
-        const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
-        if (!response.ok) {
+        const countryResponse = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
+        if (!countryResponse.ok) {
             throw new Error('Country not found');
         }
         
-        const data = await response.json();
-        displayCountryInfo(data[0]);
-        
+        const countryData = await countryResponse.json();
+        const country = countryData[0];
+        displayCountryInfo(country);
+
+        if (country.capital && country.capital[0]) {
+            await getCapitalWeather(country.capital[0], country.name.common);
+        } else {
+            weatherInfo.classList.add('hidden');
+        }
         countryResult.classList.remove('hidden');
 
     } catch (error) {
         alert(`Error: ${error.message}`);
         countryResult.classList.add('hidden');
+        weatherInfo.classList.add('hidden');
+    }
+}
+
+async function getCapitalWeather(capital, countryName) {
+    try {
+        const apiKey = '346eae349864fcea3c5ac35c5d05c789';
+        const weatherResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${capital},${countryName}&units=metric&appid=${apiKey}`
+        );
+        
+        if (!weatherResponse.ok) {
+            throw new Error('Weather data not available');
+        }
+
+        const weatherData = await weatherResponse.json();
+        displayWeatherInfo(weatherData);
+        weatherInfo.classList.remove('hidden');
+    } catch (error) {
+        console.error('Weather fetch error:', error);
+        weatherInfo.innerHTML = '<p>Weather information not available</p>';
+        weatherInfo.classList.remove('hidden');
     }
 }
 
@@ -67,8 +97,33 @@ function displayCountryInfo(country) {
             </a>
         </div>
     `;
-    
     countryResult.scrollIntoView({ behavior: 'smooth' });
+}
+
+function displayWeatherInfo(weatherData) {
+    const temp = Math.round(weatherData.main.temp);
+    const feelsLike = Math.round(weatherData.main.feels_like);
+    const description = weatherData.weather[0].description;
+    const icon = weatherData.weather[0].icon;
+    const humidity = weatherData.main.humidity;
+    const windSpeed = weatherData.wind.speed;
+
+    weatherDetails.innerHTML = `
+        <div class="weather-card">
+            <div class="weather-main">
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+                <div>
+                    <p class="weather-temp">${temp}°C</p>
+                    <p class="weather-desc">${description}</p>
+                    <p>Feels like: ${feelsLike}°C</p>
+                </div>
+            </div>
+            <div class="weather-details">
+                <p><strong>Humidity:</strong> ${humidity}%</p>
+                <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+            </div>
+        </div>
+    `;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
