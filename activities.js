@@ -6,6 +6,11 @@ async function convertCurrency() {
   const amount = parseFloat(document.getElementById('amount').value.trim());
   const output = document.getElementById('output');
 
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    nav.classList.toggle('active');
+});
+
   if (!from || !to || isNaN(amount)) {
     output.textContent = 'Please select your currencies and enter a valid amount.';
     return;
